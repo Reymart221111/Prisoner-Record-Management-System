@@ -1,0 +1,9 @@
+.sidebar-transition {
+    transition: transform 0.3s ease-in-out,
+                margin-left 0.3s ease-in-out,
+                width 0.3s ease-in-out;
+}
+
+[x-cloak] {
+    display: none !important;
+}
