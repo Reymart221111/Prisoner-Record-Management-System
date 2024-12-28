@@ -20,7 +20,7 @@ This is a **Prisoner Record Management System** built with **Laravel**, **Livewi
 1. **Clone the repository** or **download the ZIP file**:
    ```bash
    git clone https://github.com/yourusername/prisoner-record-management.git
-   cd prisoner-record-management
+   cd prisoner_record
 2. **Run migrations to set up the database:**
    ```bash
     php artisan migrate
