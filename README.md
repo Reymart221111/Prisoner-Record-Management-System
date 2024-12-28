@@ -24,10 +24,13 @@ This is a **Prisoner Record Management System** built with **Laravel**, **Livewi
 2. **Run migrations to set up the database:**
    ```bash
     php artisan migrate
-3. **Start the development server**
+3. **Run storage:link**
+   ```bash
+   php artisan storage:link
+4. **Start the development server**
    ```bash
    php artisan serve
-4. **Click the generated link and then run the site**
+5. **Click the generated link and then run the site**
 
 ## Default Login Details (No need to seed data as it is generated via the public construct in the login controller)
 * Email: test@example.com
