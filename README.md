@@ -21,16 +21,34 @@ This is a **Prisoner Record Management System** built with **Laravel**, **Livewi
    ```bash
    git clone https://github.com/yourusername/prisoner-record-management.git
    cd prisoner_record
-2. **Run migrations to set up the database:**
+2. **Copy .env example**
+   ```bash
+   copy .env.example .env
+   cp .env.example .env
+3. **Install Composer**
+   ```bash
+   composer install
+4. **Install npm**
+   ```bash
+   npm install
+   npm run build/npm run dev
+5. **Generate application key**
+   ```bash
+   php artisan key:generate
+6. **Run migrations to set up the database:**
    ```bash
     php artisan migrate
-3. **Run storage:link**
+7. **Run storage:link**
    ```bash
    php artisan storage:link
-4. **Start the development server**
+8. **Start the development server**
    ```bash
    php artisan serve
-5. **Click the generated link and then run the site**
+9. **Click the generated link and then run the site**
+
+
+
+
 
 ## Default Login Details (No need to seed data as it is generated via the public construct in the login controller)
 * Email: test@example.com
