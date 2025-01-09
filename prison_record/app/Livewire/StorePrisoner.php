@@ -164,6 +164,11 @@ class StorePrisoner extends Component
         $validatedData = $this->validate();
 
         try {
+            // Start transaction with SERIALIZABLE isolation level
+            \DB::statement('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
+            \DB::beginTransaction();
+         
+
             // Handle photo upload with image processing
             if ($this->photo) {
                 $filename = 'prisoner-' . time() . '.' . $this->photo->getClientOriginalExtension();
@@ -209,6 +214,9 @@ class StorePrisoner extends Component
             // Create prisoner record
             $prisoner = Prisoner::create($validatedData);
 
+            // Commit transaction
+            \DB::commit();
+
             session()->flash('success', 'Prisoner record added successfully.');
 
             // Redirect to the newly created prisoner's view
@@ -220,6 +228,8 @@ class StorePrisoner extends Component
                 return redirect()->route('employee.prisoners.show', $prisoner->id);
             }
         } catch (\Exception $e) {
+            // Rollback transaction in case of error
+            \DB::rollBack();
             session()->flash('error', 'Error creating prisoner record: ' . $e->getMessage());
         }
     }

@@ -284,6 +284,8 @@ class UpdatePrisoner extends Component
             return;
         }
 
+        \DB::statement('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
+        \DB::beginTransaction();
         try {
             // Handle photo upload with image processing
             if ($this->photo) {
@@ -327,6 +329,8 @@ class UpdatePrisoner extends Component
             // Update prisoner record
             $prisoner->update($validatedData);
 
+            \DB::commit();
+
             session()->flash('success', 'Prisoner record updated successfully.');
             if (Auth::user()->role === 'superadmin') {
                 return redirect()->route('superadmin.prisoners.show', $prisoner->id);
@@ -338,6 +342,7 @@ class UpdatePrisoner extends Component
                 return redirect()->route('employee.prisoners.show', $prisoner->id);
             }
         } catch (\Exception $e) {
+            \DB::rollBack();
             session()->flash('error', 'Error updating prisoner record: ' . $e->getMessage());
         }
     }

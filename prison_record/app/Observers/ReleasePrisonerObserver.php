@@ -13,76 +13,22 @@ use function PHPUnit\Framework\throwException;
 
 class ReleasePrisonerObserver
 {
-    // public function updating(Prisoner $prisoner): void
-    // {
-    //     // Check if prisoner was active before the update
-    //     $wasActive = $prisoner->getOriginal('status') === PrisonerStatus::ACTIVE->value;
+    public function saving(Prisoner $prisoner): void
+    {
+        if (!$prisoner->isActive()) {
+            return;
+        }
 
-    //     if (!$wasActive && !$prisoner->isActive()) {
-    //         return;
-    //     }
+        $today = Carbon::now();
 
-    //     $today = Carbon::now()->startOfDay();
-
-    //     // Auto release based on date
-    //     if ($prisoner->release_date && Carbon::parse($prisoner->release_date)->startOfDay()->lte($today)) {
-    //         $prisoner->status = PrisonerStatus::RELEASED;
-    //         $prisoner->status_note = 'Automatically released due to completed sentence';
-    //         $this->handleReleasePrisoner($prisoner);
-    //     }
-
-    //     // Handle status changes
-    //     if ($prisoner->isDirty('status')) {
-    //         if ($prisoner->status->value === PrisonerStatus::RELEASED->value) {
-    //             $this->handleReleasePrisoner($prisoner);
-    //         } else {
-    //             // If status changed to something other than RELEASED, soft delete the release record
-    //             $prisoner->releasedPrisoner()->delete();
-    //         }
-    //     }
-    // }
-
-    // public function saving(Prisoner $prisoner): void
-    // {
-    //     if (!$prisoner->isActive()) {
-    //         return;
-    //     }
-
-    //     $today = Carbon::now()->startOfDay();
-
-    //     if ($prisoner->release_date && Carbon::parse($prisoner->release_date)->startOfDay()->lte($today)) {
-    //         $prisoner->status = PrisonerStatus::RELEASED;
-    //         $prisoner->status_note = 'Automatically released due to completed sentence';
-    //         $this->handleReleasePrisoner($prisoner);
-    //     }
-    // }
-
-    // public function saving(Prisoner $prisoner)
-    // {
-    //     if ($prisoner->status->value === PrisonerStatus::RELEASED->value) {
-    //         // Check for existing record including soft-deleted ones
-    //         $existingRecord = $prisoner->releasedPrisoner()->withTrashed()->first();
-            
-    //         if ($existingRecord) {
-    //             // If record exists but was deleted, restore it
-    //             if ($existingRecord->trashed()) {
-    //                 $existingRecord->restore();
-    //                 $existingRecord->update([
-    //                     'release_date' => $prisoner->release_date,
-    //                     'notes' => 'Automatically Release due to completed sentence.',
-    //                 ]);
-    //             }
-    //         } else {
-    //             // Create new record if none exists at all
-    //             $prisoner->releasedPrisoner()->create([
-    //                 'release_date' => $prisoner->release_date,
-    //                 'notes' => 'Automatically Release due to completed sentence.',
-    //             ]);
-    //         }
-    //         debugbar()->info('Save to releases successfully!');
-    //     }
-    // }
-
+        if ($prisoner->release_date && Carbon::parse($prisoner->release_date)->toDateString() === $today->toDateString()) {
+            if ($prisoner->status->value !== PrisonerStatus::RELEASED->value) {
+                $prisoner->status = PrisonerStatus::RELEASED;
+                $prisoner->status_note = 'Automatically released due to completed sentence';
+            }
+        }
+    }
+    
     public function updated(Prisoner $prisoner)
     {
         // Get the original status before the update
@@ -169,9 +115,6 @@ class ReleasePrisonerObserver
 
     public function deleted(Prisoner $prisoner): void
     {
-        if (!$prisoner->isActive()) {
-            return;
-        }
 
         $prisoner->releasedPrisoner()->delete();
     }

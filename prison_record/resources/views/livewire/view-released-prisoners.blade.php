@@ -81,7 +81,7 @@ use Carbon\Carbon;
                 @foreach ($releasedPrisoners as $prisoner)
                 <tr class="hover:bg-gray-50">
                     <td class="px-8 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-900">{{$prisoner->prisoner->prisoner_id}}</div>
+                        <div class="text-sm font-medium text-gray-900">{{$prisoner->prisoner->prisoner_id ?? "None"}}</div>
                     </td>
                     <td class="px-1 py-4 whitespace-nowrap">
                         <div class="flex items-center">
