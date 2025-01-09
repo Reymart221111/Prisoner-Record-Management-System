@@ -24,14 +24,14 @@ class PrisonerActionButton extends Component
         $this->page = $page;
     }
 
-    public function destroy()
+    public function deletePrisoner()
     {
         $prisoner = Prisoner::findOrFail($this->prisonerId);
         $this->authorize('delete', $prisoner);
 
         $prisoner->delete();
 
-        return redirect(request()->header('Referer'));
+        return redirect(request()->header('Referer'))->with('success','Prisoner deleted successfully');
     }
 
     public function render()
