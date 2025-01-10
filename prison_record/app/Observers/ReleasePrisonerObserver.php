@@ -21,7 +21,7 @@ class ReleasePrisonerObserver
 
         $today = Carbon::now();
 
-        if ($prisoner->release_date && Carbon::parse($prisoner->release_date)->toDateString() === $today->toDateString()) {
+        if ($prisoner->release_date && Carbon::parse($prisoner->release_date)->toDateString() <= $today->toDateString()) {
             if ($prisoner->status->value !== PrisonerStatus::RELEASED->value) {
                 $prisoner->status = PrisonerStatus::RELEASED;
                 $prisoner->status_note = 'Automatically released due to completed sentence';
@@ -104,10 +104,6 @@ class ReleasePrisonerObserver
 
     public function created(Prisoner $prisoner): void
     {
-        if (!$prisoner->isActive()) {
-            return;
-        }
-
         if ($prisoner->status->value === PrisonerStatus::RELEASED->value) {
             $this->handleReleasePrisoner($prisoner);
         }
