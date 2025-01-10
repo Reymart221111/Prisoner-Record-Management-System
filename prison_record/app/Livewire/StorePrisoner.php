@@ -66,7 +66,7 @@ class StorePrisoner extends Component
             'sex' => ['required', new Enum(Sex::class)],
             'admission_date' => 'required|date|before_or_equal:today',
             'release_date' => 'nullable|date|after:admission_date',
-            'cell_block' => 'required|string|max:10',
+            'cell_block' => 'required|string|max:40',
             'cell_number' => 'required|string|max:10',
             'status' => [
                 'required',
