@@ -163,6 +163,10 @@ class StorePrisoner extends Component
     {
         $validatedData = $this->validate();
 
+        if (empty($validatedData['release_date'])) {
+            $validatedData['release_date'] = null;
+        }
+        
         try {
             // Start transaction with SERIALIZABLE isolation level
             \DB::statement('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
