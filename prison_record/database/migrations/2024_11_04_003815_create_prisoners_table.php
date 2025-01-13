@@ -48,6 +48,8 @@ return new class extends Migration
             $table->string('relationship')->nullable();
             $table->string('photo_path')->nullable();
 
+            $table->index(['first_name', 'last_name'], 'prisoner_name_index');
+            
             $table->timestamps();
             $table->softDeletes();
         });

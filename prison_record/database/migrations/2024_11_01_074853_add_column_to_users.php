@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('firstName', 255)->after('username')->nullable();
             $table->string('lastName', 255)->after('firstName')->nullable();
+            $table->index(['firstName', 'lastName'], 'user_name_index'); // Add index for faster search
         });
     }
 
