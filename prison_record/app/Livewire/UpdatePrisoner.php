@@ -84,7 +84,7 @@ class UpdatePrisoner extends Component
 
                 return $isRequired;
             })],
-            'cell_block' => 'required|string|max:10',
+            'cell_block' => 'required|string|max:50',
             'cell_number' => 'required|string|max:10',
             'status' => [
                 'required',
